@@ -1,0 +1,32 @@
+* prometrics
+
+Prometheus metrics collector for [[https://github.com/cep21/circuit][circuit]].
+
+*  Example
+
+#+BEGIN_SRC go
+
+import (
+    "github.com/jiacai2050/prometrics"
+    "github.com/prometheus/client_golang/prometheus"
+)
+
+prom := prometrics.GetFactory(prometheus.DefaultRegisterer)
+h := circuit.Manager{
+	DefaultCircuitProperties: []circuit.CommandPropertiesConstructor{
+		prom.CommandProperties,
+		// ... other config
+	}
+}
+
+c := h.MustCreateCircuit("hello-world")
+#+END_SRC
+
+Exported metrics can be found [[metrics.go]]. You can also check via
+
+#+BEGIN_SRC bash
+curl 0:8080/metrics | grep circuit
+#+END_SRC
+
+* License
+Same as [[https://github.com/cep21/circuit/blob/master/LICENSE.txt][circuit]].
